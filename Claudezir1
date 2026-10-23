@@ -1,0 +1,63 @@
+/* ===== CSS ===== */
+:root {
+    --bg: #ffffff;
+    --bg-soft: rgba(247, 248, 249, 1);
+    --text: rgba(33, 37, 41, 1);
+    --border: rgba(242, 242, 242, 1);
+}
+[data-theme="dark"] {
+    --bg: #14171a;
+    --bg-soft: #1d2125;
+    --text: #e8eaed;
+    --border: #2c3238;
+}
+html, body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+header, section pre, .further {
+    background-color: var(--bg-soft);
+}
+header ul, section pre, .further {
+    border-color: var(--border);
+}
+header li a {
+    color: var(--text);
+    opacity: .7;
+}
+#themeToggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.1rem;
+    height: 38px;
+    margin: 5px 0;
+    width: 42px;
+}
+#themeToggle:hover {
+    background-color: rgba(221, 72, 20, .2);
+}
+<!-- ===== HTML: pégalo junto a los menu-item ===== -->
+<li class="menu-item hidden">
+    <button id="themeToggle" aria-label="Cambiar tema">🌙</button>
+</li>
+// ===== JS =====
+(function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var saved = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = saved || (prefersDark ? 'dark' : 'light');
+
+    function apply(t) {
+        root.setAttribute('data-theme', t);
+        btn.textContent = t === 'dark' ? '☀️' : '🌙';
+        localStorage.setItem('theme', t);
+    }
+    apply(theme);
+    btn.addEventListener('click', function () {
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+})();
